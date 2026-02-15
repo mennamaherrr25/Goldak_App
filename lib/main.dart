@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:goldak/core/networking/dio_helper.dart';
 import 'package:goldak/core/routing/app_router.dart';
 import 'package:goldak/core/routing/routes.dart';
+import 'package:goldak/features/gold/data/repo/gold_repo.dart';
+import 'package:goldak/features/gold/presentation/cubit/gold_cubit.dart';
 import 'package:goldak/features/silver/data/repo/silver_repo.dart';
 import 'package:goldak/features/silver/presentation/cubit/silver_cubit.dart';
 
@@ -10,8 +12,11 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   DioHelper.init();
   runApp(
-    BlocProvider(
-      create: (context) => SilverCubit(SilverRepo()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => SilverCubit(SilverRepo())),
+        BlocProvider(create: (context) => GoldCubit(GoldRepo())),
+      ],
       child: const MyApp(),
     ),
   );
